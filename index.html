@@ -256,12 +256,29 @@ Now screenshot this and send it to me 😌</p>
 
   <script>
     // ======= Customize these two lines =======
-    const HER_NAME = "Arya💖";     // <-- change to her name
-    const YOUR_NAME = "Satish";  // <-- change to your name
+    const HER_NAME = "Arya💖";      // <-- change to her name
+    const YOUR_NAME = "Satish";   // <-- change to your name
     // ========================================
 
     const beggingGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWZqY2V3emQ3d2o4N2RrM2xvd2p5aThzM3Z4M2t4d2x2YzR2aSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3oriO0OEd9QIDdllqo/giphy.gif";
     const celebrateGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3Z0ZWJwNGVqZ2E0cGQ2dXBqMGk3Y29mY2k1ajR2Z3F3Y3ZscCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26BRv0ThflsHCqDrG/giphy.gif";
+
+    // These are the dramatic messages that pop up
+    const dramaticPrompts = [
+      "Wait, did your finger slip? 🤨",
+      "Are you sure? Like, 100% sure? 🥺",
+      "Think about the puppies, Arya! 🐶",
+      "I'm literally holding my breath right now...",
+      "Error 404: 'No' button not found. 🚫",
+      "You're just playing hard to get, aren't you? 😏",
+      "My heart... it's breaking... 💔",
+      "I'll give you a cookie! 🍪",
+      "Okay, now you're just being mean! 😂",
+      "Is that your final answer? (Please say no to No)",
+      "I will haunt your dreams with cuteness! 👻",
+      "Look how big the Yes button is! Just click it! ✨",
+      "Resistance is futile. Just say Yes! 💖"
+    ];
 
     const herNameEl = document.getElementById("herName");
     const yourNameEl = document.getElementById("yourName");
@@ -272,54 +289,65 @@ Now screenshot this and send it to me 😌</p>
     const headline = document.getElementById("headline");
     const subtext = document.getElementById("subtext");
     const helper = document.getElementById("helper");
-    const btnRow = document.getElementById("btnRow");
     const card = document.getElementById("card");
 
     herNameEl.textContent = HER_NAME;
     yourNameEl.textContent = YOUR_NAME;
 
     let noAttempts = 0;
-    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+    let yesScale = 1; 
 
     function moveNoButton() {
-      noAttempts++;
+      // 1. Update the dramatic text
+      if (noAttempts < dramaticPrompts.length) {
+        helper.textContent = dramaticPrompts[noAttempts];
+        helper.style.color = "#ff4d88"; 
+        helper.style.fontWeight = "bold";
+      }
 
+      noAttempts++;
+      
+      // 2. Make the Yes button GROW
+      yesScale += 0.15;
+      yesBtn.style.transform = `scale(${yesScale})`;
+      yesBtn.style.zIndex = "100"; 
+
+      // 3. Teleport the No button
       const cardRect = card.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
 
-      const padding = 12;
-      const minX = padding;
-      const maxX = cardRect.width - btnRect.width - padding;
-      const minY = 0;
-      const maxY = btnRow.offsetHeight - btnRect.height;
+      const padding = 20;
+      const minX = -cardRect.width / 2 + btnRect.width;
+      const maxX = cardRect.width / 2 - btnRect.width;
+      const minY = -100;
+      const maxY = 100;
 
       let x = Math.random() * (maxX - minX) + minX;
       let y = Math.random() * (maxY - minY) + minY;
 
-      if (noAttempts >= 5) noBtn.style.transform = `translate(${x}px, ${y}px) scale(0.92)`;
-      else noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      noBtn.style.position = "absolute";
+      noBtn.style.transition = "all 0.2s ease";
+      noBtn.style.left = "50%";
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
 
-      if (noAttempts >= 8) {
-        noBtn.classList.add("wiggle");
-        setTimeout(() => noBtn.classList.remove("wiggle"), 260);
-      }
-
-      if (noAttempts >= 10) {
-        helper.textContent = "You can’t say no 🥺";
-      }
+      // 4. Add the wiggle shake
+      noBtn.classList.add("wiggle");
+      setTimeout(() => noBtn.classList.remove("wiggle"), 260);
     }
 
+    // Event listeners for No button
     noBtn.addEventListener("mouseenter", (e) => { e.preventDefault(); moveNoButton(); });
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive:false });
-    noBtn.addEventListener("focus", () => moveNoButton());
     noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
 
+    // Event listener for Yes button
     yesBtn.addEventListener("click", () => {
       gifEl.src = celebrateGif;
+      yesBtn.style.transform = "scale(1)"; 
 
       headline.textContent = `YAY! ${HER_NAME} said YES 💖`;
       subtext.textContent = "Best decision you’ve made today 😌";
-      helper.textContent = "Okay now you’re officially my Valentine 💘";
+      helper.textContent = "I knew you couldn't resist! 😉";
       result.style.display = "block";
 
       noBtn.style.display = "none";
@@ -328,10 +356,7 @@ Now screenshot this and send it to me 😌</p>
       const defaults = { spread: 70, ticks: 90, gravity: 0.9, scalar: 1.0 };
       confetti({ ...defaults, particleCount: 120, origin: { y: 0.65 } });
       setTimeout(() => confetti({ ...defaults, particleCount: 90, origin: { y: 0.75 } }), 220);
-      setTimeout(() => confetti({ ...defaults, particleCount: 70, origin: { y: 0.7 } }), 440);
     });
-
-    noBtn.style.transform = "translate(220px, 0px)";
   </script>
 </body>
 </html>

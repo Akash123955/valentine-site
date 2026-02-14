@@ -254,31 +254,30 @@ Now screenshot this and send it to me 😌</p>
     <div class="footer">Made with dramatic energy by <span id="yourName">you</span></div>
   </main>
 
-  <script>
+ <script>
     // ======= Customize these two lines =======
-    const HER_NAME = "Arya";      // <-- change to her name
-    const YOUR_NAME = "Satish";   // <-- change to your name
+    const HER_NAME = "Arya";      
+    const YOUR_NAME = "Satish";   
     // ========================================
 
-    // Cute Panda GIFs
-    const beggingGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EatwJZRUIv41G/giphy.gif"; 
-    const celebrateGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f6V2DQzUMXRLW/giphy.gif";
+    // Cute Panda GIFs from GIPHY
+    const beggingGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EatwJZRUIv41G/giphy.gif"; // Panda with hearts
+    const celebrateGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f6V2DQzUMXRLW/giphy.gif"; // Panda happy dance
 
-    // Dramatic panda-themed prompts
+    // The most adorable guilt-trip text ever
     const dramaticPrompts = [
-      "Wait, did your finger slip? 🤨",
+      "Wait... are you sure? 🥺",
       "Panda is getting sad... 🐼💔",
-      "Think about the bamboo, Arya! 🎋",
-      "I'm literally holding my panda-breath... 🥺",
-      "Error 404: 'No' button is extinct. 🚫",
-      "You're just playing hard to get, aren't you? 😏",
-      "My panda heart... it's breaking... ❤️‍🩹",
-      "I'll give you a giant panda hug! 🤗",
-      "Now you're just being mean to the panda! 😂",
-      "I'm telling your mom! 📞",
-      "Is that your final answer? (Please say no to No)",
-      "Look how big the Yes button is! Just click it! ✨",
-      "Resistance is futile. Say Yes for the Panda! 🐼💖"
+      "I'll give you all the bamboo in the world! 🎋",
+      "Pretty please with extra sparkles? ✨",
+      "My little panda heart can't take this! ❤️‍🩹",
+      "I'm literally crying cute tears... 😭",
+      "Look at these eyes! You can't say no! 👁️👁️",
+      "I'll be your personal teddy bear forever! 🧸",
+      "If you say no, a tiny star disappears! ⭐️",
+      "You're breaking my heart, Arya! 🩹",
+      "The 'Yes' button is where the party is! 🥳",
+      "Resistance is futile when pandas are involved! 🐼💖"
     ];
 
     const herNameEl = document.getElementById("herName");
@@ -292,85 +291,69 @@ Now screenshot this and send it to me 😌</p>
     const helper = document.getElementById("helper");
     const card = document.getElementById("card");
 
-    // Initialize names
     herNameEl.textContent = HER_NAME;
     yourNameEl.textContent = YOUR_NAME;
-    
-    // Set initial panda GIF
+
+    // Start with the begging panda
     gifEl.src = beggingGif;
 
     let noAttempts = 0;
     let yesScale = 1; 
 
     function moveNoButton() {
-      // 1. Update the dramatic text
       if (noAttempts < dramaticPrompts.length) {
         helper.textContent = dramaticPrompts[noAttempts];
         helper.style.color = "#ff4d88"; 
-        helper.style.fontWeight = "bold";
-      } else {
-        helper.textContent = "Okay, I'm not moving until you click Yes! 😤";
+        helper.style.fontSize = "17px";
+        helper.style.fontStyle = "italic";
       }
 
       noAttempts++;
       
-      // 2. Make the Yes button GROW
-      yesScale += 0.18;
+      // Yes button gets bigger and more inviting
+      yesScale += 0.2;
       yesBtn.style.transform = `scale(${yesScale})`;
       yesBtn.style.zIndex = "100"; 
 
-      // 3. Teleport the No button
       const cardRect = card.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
 
-      // We use slightly wider padding so it doesn't get stuck in corners
-      const padding = 30;
+      const padding = 40;
       const minX = -cardRect.width / 2 + btnRect.width;
       const maxX = cardRect.width / 2 - btnRect.width;
-      const minY = -100;
-      const maxY = 100;
+      const minY = -130;
+      const maxY = 130;
 
       let x = Math.random() * (maxX - minX) + minX;
       let y = Math.random() * (maxY - minY) + minY;
 
       noBtn.style.position = "absolute";
-      noBtn.style.transition = "all 0.2s ease";
       noBtn.style.left = "50%";
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-      // 4. Add the wiggle shake
       noBtn.classList.add("wiggle");
       setTimeout(() => noBtn.classList.remove("wiggle"), 260);
     }
 
-    // Interaction listeners
     noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("touchstart", (e) => { 
-      e.preventDefault(); 
-      moveNoButton(); 
-    }, { passive:false });
-    noBtn.addEventListener("click", (e) => { 
-      e.preventDefault(); 
-      moveNoButton(); 
-    });
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); });
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
 
-    // Success logic
     yesBtn.addEventListener("click", () => {
-      gifEl.src = celebrateGif;
+      gifEl.src = celebrateGif; 
       yesBtn.style.transform = "scale(1)"; 
 
-      headline.textContent = `YAY! PANDA-STIC! 💖`;
-      subtext.textContent = `You just made ${YOUR_NAME} the happiest panda in the world! 😌`;
-      helper.textContent = "Our Valentine's date is officially locked in! 💘";
+      headline.textContent = `PANDA-STIC! YOU SAID YES! 🐼💖`;
+      subtext.textContent = "You just made my whole year, Arya! 🥰";
+      helper.textContent = "I'm the luckiest person alive! ✨";
       result.style.display = "block";
 
       noBtn.style.display = "none";
       yesBtn.classList.remove("pulse");
 
-      // Confetti burst
-      const defaults = { spread: 70, ticks: 90, gravity: 0.9, scalar: 1.0 };
-      confetti({ ...defaults, particleCount: 150, origin: { y: 0.6 } });
-      setTimeout(() => confetti({ ...defaults, particleCount: 100, origin: { y: 0.75 } }), 200);
+      // Super confetti explosion
+      const defaults = { spread: 90, ticks: 120, gravity: 0.8, scalar: 1.2 };
+      confetti({ ...defaults, particleCount: 180, origin: { y: 0.6 } });
+      setTimeout(() => confetti({ ...defaults, particleCount: 120, origin: { y: 0.7 } }), 200);
     });
   </script>
 </body>

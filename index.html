@@ -256,28 +256,29 @@ Now screenshot this and send it to me 😌</p>
 
   <script>
     // ======= Customize these two lines =======
-    const HER_NAME = "Arya💖";      // <-- change to her name
+    const HER_NAME = "Arya";      // <-- change to her name
     const YOUR_NAME = "Satish";   // <-- change to your name
     // ========================================
 
-   const beggingGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EatwJZRUIv41G/giphy.gif"; // Panda with hearts
-    const celebrateGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f6V2DQzUMXRLW/giphy.gif"; // Panda happy dance
-    
-    // These are the dramatic messages that pop up
+    // Cute Panda GIFs
+    const beggingGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EatwJZRUIv41G/giphy.gif"; 
+    const celebrateGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3N3J6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6eXp6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f6V2DQzUMXRLW/giphy.gif";
+
+    // Dramatic panda-themed prompts
     const dramaticPrompts = [
       "Wait, did your finger slip? 🤨",
-      "Are you sure? Like, 100% sure? 🥺",
-      "Think about the puppies, Arya! 🐶",
-      "I'm literally holding my breath right now...",
-      "Error 404: 'No' button not found. 🚫",
+      "Panda is getting sad... 🐼💔",
+      "Think about the bamboo, Arya! 🎋",
+      "I'm literally holding my panda-breath... 🥺",
+      "Error 404: 'No' button is extinct. 🚫",
       "You're just playing hard to get, aren't you? 😏",
-      "My heart... it's breaking... 💔",
-      "I'll give you a cookie! 🍪",
-      "Okay, now you're just being mean! 😂",
+      "My panda heart... it's breaking... ❤️‍🩹",
+      "I'll give you a giant panda hug! 🤗",
+      "Now you're just being mean to the panda! 😂",
+      "I'm telling your mom! 📞",
       "Is that your final answer? (Please say no to No)",
-      "I will haunt your dreams with cuteness! 👻",
       "Look how big the Yes button is! Just click it! ✨",
-      "Resistance is futile. Just say Yes! 💖"
+      "Resistance is futile. Say Yes for the Panda! 🐼💖"
     ];
 
     const herNameEl = document.getElementById("herName");
@@ -291,8 +292,12 @@ Now screenshot this and send it to me 😌</p>
     const helper = document.getElementById("helper");
     const card = document.getElementById("card");
 
+    // Initialize names
     herNameEl.textContent = HER_NAME;
     yourNameEl.textContent = YOUR_NAME;
+    
+    // Set initial panda GIF
+    gifEl.src = beggingGif;
 
     let noAttempts = 0;
     let yesScale = 1; 
@@ -303,12 +308,14 @@ Now screenshot this and send it to me 😌</p>
         helper.textContent = dramaticPrompts[noAttempts];
         helper.style.color = "#ff4d88"; 
         helper.style.fontWeight = "bold";
+      } else {
+        helper.textContent = "Okay, I'm not moving until you click Yes! 😤";
       }
 
       noAttempts++;
       
       // 2. Make the Yes button GROW
-      yesScale += 0.15;
+      yesScale += 0.18;
       yesBtn.style.transform = `scale(${yesScale})`;
       yesBtn.style.zIndex = "100"; 
 
@@ -316,7 +323,8 @@ Now screenshot this and send it to me 😌</p>
       const cardRect = card.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
 
-      const padding = 20;
+      // We use slightly wider padding so it doesn't get stuck in corners
+      const padding = 30;
       const minX = -cardRect.width / 2 + btnRect.width;
       const maxX = cardRect.width / 2 - btnRect.width;
       const minY = -100;
@@ -335,27 +343,34 @@ Now screenshot this and send it to me 😌</p>
       setTimeout(() => noBtn.classList.remove("wiggle"), 260);
     }
 
-    // Event listeners for No button
-    noBtn.addEventListener("mouseenter", (e) => { e.preventDefault(); moveNoButton(); });
-    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive:false });
-    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+    // Interaction listeners
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => { 
+      e.preventDefault(); 
+      moveNoButton(); 
+    }, { passive:false });
+    noBtn.addEventListener("click", (e) => { 
+      e.preventDefault(); 
+      moveNoButton(); 
+    });
 
-    // Event listener for Yes button
+    // Success logic
     yesBtn.addEventListener("click", () => {
       gifEl.src = celebrateGif;
       yesBtn.style.transform = "scale(1)"; 
 
-      headline.textContent = `YAY! ${HER_NAME} said YES 💖`;
-      subtext.textContent = "Best decision you’ve made today 😌";
-      helper.textContent = "I knew you couldn't resist! 😉";
+      headline.textContent = `YAY! PANDA-STIC! 💖`;
+      subtext.textContent = `You just made ${YOUR_NAME} the happiest panda in the world! 😌`;
+      helper.textContent = "Our Valentine's date is officially locked in! 💘";
       result.style.display = "block";
 
       noBtn.style.display = "none";
       yesBtn.classList.remove("pulse");
 
+      // Confetti burst
       const defaults = { spread: 70, ticks: 90, gravity: 0.9, scalar: 1.0 };
-      confetti({ ...defaults, particleCount: 120, origin: { y: 0.65 } });
-      setTimeout(() => confetti({ ...defaults, particleCount: 90, origin: { y: 0.75 } }), 220);
+      confetti({ ...defaults, particleCount: 150, origin: { y: 0.6 } });
+      setTimeout(() => confetti({ ...defaults, particleCount: 100, origin: { y: 0.75 } }), 200);
     });
   </script>
 </body>
